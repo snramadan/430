@@ -1,0 +1,58 @@
+#!/bin/csh -f
+# test one and do diff
+
+if (! -f "hw2.sml") then
+echo "must provide source file 'hw2.sml'"; exit 1
+endif
+
+/home/akeen/public/ml/bin/sml >&! tmp << END
+val devnull = Posix.FileSys.openf ("/dev/null", Posix.FileSys.O_WRONLY, Posix.FileSys.O.trunc);
+val sout = Posix.IO.dup(Posix.FileSys.stdout);
+Posix.IO.dup2 {old=devnull, new=Posix.FileSys.stdout};
+
+Control.Print.printDepth := 20;
+Control.Print.printLength := 100;
+
+datatype 'a List =
+     ListNode of {value : 'a, next : 'a List}
+   | EmptyList
+;
+
+datatype 'a BinTree =
+     BinTreeNode of {value: 'a, lft: 'a BinTree, rht: 'a BinTree}
+   | EmptyBinTree
+;
+
+datatype expression =
+   ID of string
+ | NUM of int
+ | PLUS of expression * expression
+ | TIMES of expression * expression
+;
+
+datatype expression2 =
+   INT of int
+ | ADD of expression2 * expression2
+ | MULT of expression2 * expression2
+ | LESSTHAN of expression2 * expression2
+;
+
+use "hw2.sml";
+
+fun printPart s =
+   TextIO.print ("\n--------- Part" ^ s ^ " ---------\n")
+;
+
+Posix.IO.dup2 {old=sout, new=Posix.FileSys.stdout};
+
+use "tests.sml";
+
+END
+grep -v "GC #" tmp | grep -v "Standard ML" | grep -v "autoloading" | grep -v "unit" | grep -v "Warning" | grep -v "dummy" | grep -v "library" | grep -v "FD" | grep -v '^- $' | grep -v 'stdin'
+rm tmp
+
+echo
+echo
+echo "--------- Actual Part 3 ---------"
+javac -cp .:/home/akeen/public/junit-4.12.jar *.java
+java -cp .:/home/akeen/public/junit-4.12.jar:/home/akeen/public/hamcrest-core-1.3.jar org.junit.runner.JUnitCore Part3Tests | grep -v "Time:"

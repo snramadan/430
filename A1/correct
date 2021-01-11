@@ -1,0 +1,137 @@
+[opening tests.sml]
+
+--------- Part1 ---------
+ **** intToString 99;
+val it = "99" : string
+ **** intToString ~1;
+val it = "-1" : string
+ **** intToString 12;
+val it = "12" : string
+ **** intToString ~4729;
+val it = "-4729" : string
+
+--------- Part2 ---------
+ **** twin [];
+val it = [] : (?.X1 * ?.X1) list
+ **** twin [1,2,3];
+val it = [(1,1),(2,2),(3,3)] : (int * int) list
+ **** twin [3,2,3,4];
+val it = [(3,3),(2,2),(3,3),(4,4)] : (int * int) list
+ **** twin ["abc","123","shoe"];
+val it = [("abc","abc"),("123","123"),("shoe","shoe")]
+  : (string * string) list
+
+--------- Part3 ---------
+ **** memberRec ([],1);
+val it = false : bool
+ **** memberRec ([1,2,3], 2);
+val it = true : bool
+ **** memberRec ([1,2,3], 4);
+val it = false : bool
+ **** memberRec (["hello","hola","ciao","howdy"], "hi");
+val it = false : bool
+ **** memberRec (["hello","hola","ciao"], "hello");
+val it = true : bool
+
+--------- Part4 ---------
+ **** replace (3, 4, []);
+val it = [] : int list
+ **** replace (0, 4, []);
+val it = [] : int list
+ **** replace (3, "new", ["a", "b", "c", "d", "e"]);
+val it = ["a","b","c","new","e"] : string list
+ **** replace (0, 9, [1, 2, 3, 4]);
+val it = [9,2,3,4] : int list
+ **** replace (1, 9, [1, 2, 3, 4]);
+val it = [1,9,3,4] : int list
+ **** replace (2, 9, [1, 2, 3, 4]);
+val it = [1,2,9,4] : int list
+ **** replace (3, 9, [1, 2, 3, 4]);
+val it = [1,2,3,9] : int list
+ **** replace (4, 9, [1, 2, 3, 4]);
+val it = [1,2,3,4] : int list
+ **** replace (27, 9, [1, 2, 3, 4]);
+val it = [1,2,3,4] : int list
+ **** replace (~1, 9, [1, 2, 3, 4]);
+val it = [1,2,3,4] : int list
+
+--------- Part5 ---------
+ **** whitespacePrefix [];
+val it = ("",[]) : string * char list
+ **** whitespacePrefix [#"a", #"2", #"c", #" ", #"a"];
+val it = ("",[#"a",#"2",#"c",#" ",#"a"]) : string * char list
+ **** whitespacePrefix [#" ", #"\t", #" ", #"a"];
+val it = (" \t ",[#"a"]) : string * char list
+ **** numberPrefix [];
+val it = ("",[]) : string * char list
+ **** numberPrefix [#"a", #"2", #"c", #" ", #"a"];
+val it = ("",[#"a",#"2",#"c",#" ",#"a"]) : string * char list
+ **** numberPrefix [#"2", #"3", #" ", #"a"];
+val it = ("23",[#" ",#"a"]) : string * char list
+ **** numberPrefix [#"2", #"3", #"-", #"a"];
+val it = ("23",[#"-",#"a"]) : string * char list
+ **** identifierPrefix [];
+val it = ("",[]) : string * char list
+ **** identifierPrefix [#"a", #"2", #"c", #" ", #"a"];
+val it = ("a2c",[#" ",#"a"]) : string * char list
+ **** identifierPrefix [#"2", #"c", #" ", #"a"];
+val it = ("",[#"2",#"c",#" ",#"a"]) : string * char list
+ **** identifierPrefix [#" ", #"c", #" ", #"a"];
+val it = ("",[#" ",#"c",#" ",#"a"]) : string * char list
+
+--------- Part6 ---------
+ **** splitTokens "abc xyz";
+val it = ["abc","xyz"] : string list
+ **** splitTokens "   123 456   ";
+val it = ["123","456"] : string list
+ **** splitTokens "abc123  xyz";
+val it = ["abc123","xyz"] : string list
+ **** splitTokens "abc 123  \t xyz";
+val it = ["abc","123","xyz"] : string list
+ **** splitTokens "004abc123";
+val it = ["004","abc123"] : string list
+ **** splitTokens "100-90" handle InvalidTokenStart c => ["invalid character '" ^ str c ^ "'"];
+val it = ["invalid character '-'"] : string list
+
+--------- Part7 ---------
+ **** join(", ", ["first", "second"]);
+val it = "first, second" : string
+ **** join(",", ["first", "second"]);
+val it = "first,second" : string
+ **** join(":", ["a", "b", "c", "d"]);
+val it = "a:b:c:d" : string
+ **** join(":", ["only"]);
+val it = "only" : string
+ **** join(":", []);
+val it = "" : string
+
+--------- Part8 ---------
+ **** escapeString "abc";
+val it = "abc" : string
+ **** escapeString "ab \t c \" \\ \n";
+val it = "ab \\t c \\\" \\\\ \\n" : string
+ **** escapeString "ab \\ \t\t\ttt";
+val it = "ab \\\\ \\t\\t\\ttt" : string
+
+--------- Part9 ---------
+ **** unescapeString "abc";
+val it = "abc" : string
+ **** unescapeString "ab \\t c \\\" \\\\ \\n";
+val it = "ab \t c \" \\ \n" : string
+ **** unescapeString "ab\\bc" handle InvalidEscapeSequence c => "invalid escape \\" ^ str c;
+val it = "invalid escape \\b" : string
+ **** unescapeString "ab\\" handle InvalidEscapeMissing => "escape sequence missing character";
+val it = "escape sequence missing character" : string
+
+--------- Part10 ---------
+ **** groupAscending [];
+val it = [] : int list list
+ **** groupAscending [1];
+val it = [[1]] : int list list
+ **** groupAscending [1,2,3];
+val it = [[1,2,3]] : int list list
+ **** groupAscending [1,2,3,2,3];
+val it = [[1,2,3],[2,3]] : int list list
+ **** groupAscending [4,7,10,2,3,1,99,45,122,123,122,47,46,46,49];
+val it = [[4,7,10],[2,3],[1,99],[45,122,123],[122],[47],[46],[46,49]]
+  : int list list

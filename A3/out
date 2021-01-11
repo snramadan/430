@@ -1,0 +1,87 @@
+SML not set: using default of /home/akeen/public/ml/bin/sml
+[opening tests.sml]
+
+--------- Part1 ---------
+val ae_exp1 = AE_NUM 9 : arith_expression
+val ae_exp2 = AE_PLUS (AE_NUM 3,AE_NUM 4) : arith_expression
+val ae_exp3 =
+  AE_PLUS (AE_PLUS (AE_NUM 9,AE_NUM 4),AE_PLUS (AE_NUM 9,AE_NUM 3))
+  : arith_expression
+val ae_exp4 = AE_MINUS (AE_MINUS (AE_NUM 1,AE_NUM 2),AE_NUM 3)
+  : arith_expression
+val ae_exp5 = AE_MINUS (AE_NUM 1,AE_MINUS (AE_NUM 2,AE_NUM 3))
+  : arith_expression
+val ae_exp6 =
+  AE_PLUS (AE_PLUS (AE_NUM 9,AE_NUM 3),AE_TIMES (AE_NUM 2,AE_NUM 4))
+  : arith_expression
+val ae_exp7 =
+  AE_TIMES (AE_PLUS (AE_NUM 9,AE_NUM 3),AE_PLUS (AE_NUM 2,AE_NUM 4))
+  : arith_expression
+val ae_exp8 =
+  AE_TIMES
+    (AE_MINUS (AE_NUM 6,AE_PLUS (AE_NUM 9,AE_MINUS (AE_NUM 3,AE_NUM 10))),
+     AE_DIVIDE (AE_NUM 4,AE_NUM 2)) : arith_expression
+val ae_exp9 =
+  AE_TIMES
+    (AE_PLUS (AE_NUM 6,AE_DIVIDE (AE_NUM 29,AE_TIMES (AE_NUM 2,AE_NUM 3))),
+     AE_TIMES (AE_NUM 2,AE_NUM 4)) : arith_expression
+ **** arithInfixString ae_exp1;
+val it = "9" : string
+ **** arithInfixString ae_exp2;
+val it = "(3 + 4)" : string
+ **** arithInfixString ae_exp3;
+val it = "((9 + 4) + (9 + 3))" : string
+ **** arithInfixString ae_exp4;
+val it = "((1 - 2) - 3)" : string
+ **** arithInfixString ae_exp5;
+val it = "(1 - (2 - 3))" : string
+ **** arithInfixString ae_exp6;
+val it = "((9 + 3) + (2 * 4))" : string
+ **** arithInfixString ae_exp7;
+val it = "((9 + 3) * (2 + 4))" : string
+ **** arithInfixString ae_exp8;
+val it = "((6 - (9 + (3 - 10))) * (4 / 2))" : string
+ **** arithInfixString ae_exp9;
+val it = "((6 + (29 / (2 * 3))) * (2 * 4))" : string
+ **** arithPrefixString ae_exp1;
+val it = "9" : string
+ **** arithPrefixString ae_exp2;
+val it = "(+ 3 4)" : string
+ **** arithPrefixString ae_exp3;
+val it = "(+ (+ 9 4) (+ 9 3))" : string
+ **** arithPrefixString ae_exp4;
+val it = "(- (- 1 2) 3)" : string
+ **** arithPrefixString ae_exp5;
+val it = "(- 1 (- 2 3))" : string
+ **** arithPrefixString ae_exp6;
+val it = "(+ (+ 9 3) (* 2 4))" : string
+ **** arithPrefixString ae_exp7;
+val it = "(* (+ 9 3) (+ 2 4))" : string
+ **** arithPrefixString ae_exp8;
+val it = "(* (- 6 (+ 9 (- 3 10))) (/ 4 2))" : string
+ **** arithPrefixString ae_exp9;
+val it = "(* (+ 6 (/ 29 (* 2 3))) (* 2 4))" : string
+
+--------- Part2 ---------
+ **** evalArith ae_exp1;
+val it = 9 : int
+ **** evalArith ae_exp2;
+val it = 7 : int
+ **** evalArith ae_exp3;
+val it = 25 : int
+ **** evalArith ae_exp4;
+val it = ~4 : int
+ **** evalArith ae_exp5;
+val it = 2 : int
+ **** evalArith ae_exp6;
+val it = 20 : int
+ **** evalArith ae_exp7;
+val it = 72 : int
+ **** evalArith ae_exp8;
+val it = 8 : int
+ **** evalArith ae_exp9;
+val it = 80 : int
+
+--------- Part3 ---------
+evalMixed (ME_NUM 1);
+tests.sml:78.1-78.10 Error: unbound variable or constructor: evalMixed

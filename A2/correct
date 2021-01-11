@@ -1,0 +1,146 @@
+[opening tests.sml]
+
+--------- Part1 ---------
+ **** both (fn x => x > 0, fn x => x < 20) 10;
+val it = true : bool
+ **** both (fn x => x > 0, fn x => x < 20) 100;
+val it = false : bool
+ **** both (fn x => x > #"a", fn x => x < #"z") #"b";
+val it = true : bool
+
+--------- Part2 ---------
+ **** satisfiesAll ([], 10);
+val it = true : bool
+ **** satisfiesAll ([fn x => x > 0, fn x => x < 20], 10);
+val it = true : bool
+ **** satisfiesAll ([fn x => x > 0, fn x => x < 20], 100);
+val it = false : bool
+ **** satisfiesAll ([fn x => x > 0, fn x => x < 20, fn x => x mod 2 = 0], 10);
+val it = true : bool
+ **** satisfiesAll ([fn x => x > 0, fn x => x < 20, fn x => x mod 2 = 0], 11);
+val it = false : bool
+ **** satisfiesAll ([fn x => x >= #"a", fn x => x <= #"z", fn x => x <> #"m"], #"a");
+val it = true : bool
+ **** satisfiesAll ([fn x => x >= #"a", fn x => x <= #"z", fn x => x <> #"m"], #"m");
+val it = false : bool
+
+--------- Part3 ---------
+ **** mapSome (fn x => if x > 0 then SOME x else NONE) [1, 2, ~3, 4, ~55];
+val it = [1,2,4] : int list
+ **** mapSome (fn x => if x > 0 then SOME (Int.toString x) else NONE) [1, 2, ~3, 4, ~55];
+val it = ["1","2","4"] : string list
+
+--------- Part4 ---------
+ **** memberExists ([],1);
+val it = false : bool
+ **** memberExists ([1,2,3], 2);
+val it = true : bool
+ **** memberExists ([1,2,3], 4);
+val it = false : bool
+ **** memberExists (["hello","hola","ciao","howdy"], "hi");
+val it = false : bool
+ **** memberExists (["hello","hola","ciao"], "hello");
+val it = true : bool
+
+--------- Part5 ---------
+ **** getOrElse ([], "a", ~99);
+val it = ~99 : int
+ **** getOrElse ([("a", 9), ("b", 7), ("c", 12)], "a", ~1);
+val it = 9 : int
+ **** getOrElse ([("a", 9), ("b", 7), ("c", 12)], "c", ~1);
+val it = 12 : int
+ **** getOrElse ([("a", 9), ("b", 7), ("c", 12)], "x", ~1);
+val it = ~1 : int
+ **** getOrElse ([(0, 9), (1, 7), (2, 12), (3, 19), (4, ~27)], 4, ~1);
+val it = ~27 : int
+
+--------- Part6 ---------
+ **** lengthList EmptyList;
+val it = 0 : int
+ **** lengthList (ListNode (9, ListNode (3, ListNode (2, EmptyList))));
+val it = 3 : int
+ **** lengthList (ListNode (9, ListNode (2, EmptyList)));
+val it = 2 : int
+
+--------- Part7 ---------
+ **** mapList (fn x => x * x) EmptyList;
+val it = EmptyList : int List
+ **** mapList (fn x => x * x) (ListNode (9, ListNode (3, ListNode (2, EmptyList))));
+val it = ListNode (81,ListNode (9,ListNode (4,EmptyList))) : int List
+ **** mapList (fn x => x + 1) (ListNode (9, ListNode (3, ListNode (2, EmptyList))));
+val it = ListNode (10,ListNode (4,ListNode (3,EmptyList))) : int List
+ **** mapList (fn x => x + 1) (ListNode (9, ListNode (2, EmptyList)));
+val it = ListNode (10,ListNode (3,EmptyList)) : int List
+ **** mapList (fn x => x * x) (ListNode (9, ListNode (2, EmptyList)));
+val it = ListNode (81,ListNode (4,EmptyList)) : int List
+
+--------- Part8 ---------
+val TreeExmp1 =
+  NTreeNode
+    {children=[NTreeNode {children=[],value=9},
+               NTreeNode {children=[],value=2},
+               NTreeNode {children=[],value=6},
+               NTreeNode {children=[],value=10}],value=4} : int NTree
+val TreeExmp2 =
+  NTreeNode
+    {children=[NTreeNode {children=[NTreeNode {children=[],value=12}],value=9},
+               NTreeNode {children=[],value=2},
+               NTreeNode
+                 {children=[NTreeNode {children=[],value=20},EmptyNTree,
+                            NTreeNode {children=[],value=100}],value=6},
+               NTreeNode
+                 {children=[NTreeNode
+                              {children=[NTreeNode
+                                           {children=[NTreeNode
+                                                        {children=[],value=29},
+                                                      NTreeNode
+                                                        {children=[],value=39}],
+                                            value=10}],value=19}],value=9}],
+     value=4} : int NTree
+val TreeExmp3 =
+  NTreeNode
+    {children=[NTreeNode {children=[],value="are"},
+               NTreeNode {children=[],value="the"},
+               NTreeNode {children=[],value="tree's"},
+               NTreeNode {children=[],value="values"}],value="these"}
+  : string NTree
+ **** sumNTree EmptyNTree;
+val it = 0 : int
+ **** sumNTree (NTreeNode {value=4, children=[]});
+val it = 4 : int
+ **** sumNTree (NTreeNode {value=4, children=[EmptyNTree]});
+val it = 4 : int
+ **** sumNTree TreeExmp1;
+val it = 31 : int
+ **** sumNTree TreeExmp2;
+val it = 259 : int
+
+--------- Part9 ---------
+ **** gatherNTree EmptyNTree;
+val it = [] : ?.X1 list
+ **** gatherNTree (NTreeNode {value=4, children=[]});
+val it = [4] : int list
+ **** gatherNTree (NTreeNode {value=4, children=[EmptyNTree]});
+val it = [4] : int list
+ **** gatherNTree TreeExmp1;
+val it = [4,9,2,6,10] : int list
+ **** gatherNTree TreeExmp2;
+val it = [4,9,12,2,6,20,100,9,19,10,29,39] : int list
+ **** gatherNTree TreeExmp3;
+val it = ["these","are","the","tree's","values"] : string list
+
+--------- Part10 ---------
+ **** foldNTree (fn (v, kids') => v :: (List.concat kids')) [] TreeExmp1;
+val it = [4,9,2,6,10] : int list
+ **** foldNTree (fn (v, kids') => v :: (List.concat kids')) [] TreeExmp2;
+val it = [4,9,12,2,6,20,100,9,19,10,29,39] : int list
+ **** foldNTree (fn (v, kids') => v :: (List.concat kids')) [] TreeExmp3;
+val it = ["these","are","the","tree's","values"] : string list
+ **** foldNTree (fn (v, kids') => String.concatWith " " (v :: kids')) "" TreeExmp3;
+val it = "these are the tree's values" : string
+ **** foldNTree (fn (v, kids') => String.concatWith " " (List.filter (fn x => x <> "") (Int.toString v :: kids'))) "" TreeExmp2;
+val it = "4 9 12 2 6 20 100 9 19 10 29 39" : string
+ **** foldNTree (fn (v, kids') => v + (List.foldl op+ 0 kids')) 0 TreeExmp1;
+val it = 31 : int
+ **** foldNTree (fn (v, kids') => v + (List.foldl op+ 0 kids')) 0 TreeExmp2;
+val it = 259 : int

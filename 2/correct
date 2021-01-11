@@ -1,0 +1,282 @@
+[opening tests.sml]
+
+--------- Part1 ---------
+ **** lengthList EmptyList;
+val it = 0 : int
+ **** lengthList (ListNode {value=9, next=ListNode {value=3, next=ListNode {value=2, next=EmptyList}}});
+val it = 3 : int
+ **** lengthList (ListNode {value=9, next=ListNode {value=2, next=EmptyList}});
+val it = 2 : int
+
+--------- Part2 ---------
+ **** mapList (fn x => x * x) EmptyList;
+val it = EmptyList : int List
+ **** mapList (fn x => x * x) (ListNode {value=9, next=ListNode {value=3, next=ListNode {value=2, next=EmptyList}}});
+val it =
+  ListNode
+    {next=ListNode {next=ListNode {next=EmptyList,value=4},value=9},value=81}
+  : int List
+ **** mapList (fn x => x + 1) (ListNode {value=9, next=ListNode {value=3, next=ListNode {value=2, next=EmptyList}}});
+val it =
+  ListNode
+    {next=ListNode {next=ListNode {next=EmptyList,value=3},value=4},value=10}
+  : int List
+ **** mapList (fn x => x + 1) (ListNode {value=9, next=ListNode {value=2, next=EmptyList}});
+val it = ListNode {next=ListNode {next=EmptyList,value=3},value=10} : int List
+ **** mapList (fn x => x * x) (ListNode {value=9, next=ListNode {value=2, next=EmptyList}});
+val it = ListNode {next=ListNode {next=EmptyList,value=4},value=81} : int List
+
+--------- Part3 ---------
+ **** check Java tests at end ****
+
+--------- Part4 ---------
+val Bexmp1 =
+  BinTreeNode
+    {lft=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=9},
+     rht=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=4},value=1}
+  : int BinTree
+val Bexmp2 =
+  BinTreeNode
+    {lft=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=2},
+     rht=EmptyBinTree,value=4} : int BinTree
+val Bexmp3 =
+  BinTreeNode
+    {lft=EmptyBinTree,
+     rht=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=2},value=4}
+  : int BinTree
+val Bexmp =
+  BinTreeNode
+    {lft=BinTreeNode
+           {lft=BinTreeNode
+                  {lft=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=9},
+                   rht=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=4},
+                   value=1},
+            rht=BinTreeNode
+                  {lft=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=2},
+                   rht=EmptyBinTree,value=4},value=0},
+     rht=BinTreeNode
+           {lft=EmptyBinTree,
+            rht=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=2},
+            value=4},value=12} : int BinTree
+ **** mapBinTree (fn x => x + 1) Bexmp;
+val it =
+  BinTreeNode
+    {lft=BinTreeNode
+           {lft=BinTreeNode
+                  {lft=BinTreeNode
+                         {lft=EmptyBinTree,rht=EmptyBinTree,value=10},
+                   rht=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=5},
+                   value=2},
+            rht=BinTreeNode
+                  {lft=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=3},
+                   rht=EmptyBinTree,value=5},value=1},
+     rht=BinTreeNode
+           {lft=EmptyBinTree,
+            rht=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=3},
+            value=5},value=13} : int BinTree
+ **** mapBinTree (fn x => x * 2) EmptyBinTree;
+val it = EmptyBinTree : int BinTree
+ **** mapBinTree (fn x => x * x) Bexmp;
+val it =
+  BinTreeNode
+    {lft=BinTreeNode
+           {lft=BinTreeNode
+                  {lft=BinTreeNode
+                         {lft=EmptyBinTree,rht=EmptyBinTree,value=81},
+                   rht=BinTreeNode
+                         {lft=EmptyBinTree,rht=EmptyBinTree,value=16},value=1},
+            rht=BinTreeNode
+                  {lft=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=4},
+                   rht=EmptyBinTree,value=16},value=0},
+     rht=BinTreeNode
+           {lft=EmptyBinTree,
+            rht=BinTreeNode {lft=EmptyBinTree,rht=EmptyBinTree,value=4},
+            value=16},value=144} : int BinTree
+
+--------- Part5 ---------
+val exp1 = NUM 2 : expression
+val exp2 = ID "a" : expression
+val exp3 = PLUS (NUM 2,ID "a") : expression
+val exp4 = TIMES (NUM 2,ID "a") : expression
+val exp5 = PLUS (TIMES (NUM 2,ID "a"),PLUS (ID "b",ID "x")) : expression
+val exp6 =
+  PLUS
+    (PLUS
+       (PLUS
+          (PLUS
+             (PLUS (PLUS (NUM 1,TIMES (NUM 2,NUM 3)),TIMES (ID "a",NUM 4)),
+              NUM 3),NUM 2),TIMES (NUM 7,NUM 2)),
+     PLUS (PLUS (NUM 9,NUM 4),ID "b")) : expression
+val exp7 =
+  PLUS
+    (PLUS
+       (PLUS
+          (PLUS
+             (PLUS (PLUS (NUM 1,TIMES (NUM 2,NUM 3)),TIMES (NUM 2,NUM 4)),
+              NUM 3),NUM 2),TIMES (NUM 7,NUM 2)),
+     PLUS (PLUS (NUM 9,NUM 4),ID "b")) : expression
+val exp8 = PLUS (TIMES (NUM 1,ID "a"),PLUS (NUM 0,NUM 0)) : expression
+val exp9 =
+  PLUS
+    (PLUS
+       (PLUS
+          (PLUS
+             (PLUS (PLUS (NUM 0,TIMES (NUM 2,NUM 3)),TIMES (NUM 2,NUM 4)),
+              NUM 3),NUM 2),TIMES (NUM 7,NUM 1)),
+     PLUS (PLUS (NUM 9,NUM 4),ID "b")) : expression
+ **** gatherIdentifiers exp1;
+val it = [] : string list
+ **** gatherIdentifiers exp2;
+val it = ["a"] : string list
+ **** gatherIdentifiers exp3;
+val it = ["a"] : string list
+ **** gatherIdentifiers exp4;
+val it = ["a"] : string list
+ **** gatherIdentifiers exp5;
+val it = ["a","b","x"] : string list
+ **** gatherIdentifiers exp6;
+val it = ["a","b"] : string list
+ **** gatherIdentifiers exp7;
+val it = ["b"] : string list
+ **** gatherIdentifiers exp8;
+val it = ["a"] : string list
+ **** gatherIdentifiers exp9;
+val it = ["b"] : string list
+
+--------- Part6 ---------
+val compute0 = NUM 9 : expression
+val compute1 = PLUS (NUM 3,NUM 4) : expression
+val compute2 = PLUS (PLUS (NUM 9,NUM 4),PLUS (NUM 9,NUM 3)) : expression
+val compute3 = PLUS (PLUS (NUM 9,NUM 3),TIMES (NUM 2,NUM 4)) : expression
+val compute4 = TIMES (PLUS (NUM 9,NUM 3),PLUS (NUM 2,NUM 4)) : expression
+val compute5 =
+  TIMES (PLUS (NUM 6,PLUS (NUM 9,PLUS (NUM 3,NUM 10))),PLUS (NUM 2,NUM 4))
+  : expression
+val compute6 =
+  TIMES (PLUS (NUM 6,TIMES (NUM 9,PLUS (NUM 3,NUM 10))),TIMES (NUM 2,NUM 4))
+  : expression
+val compute7 = PLUS (TIMES (NUM 9,ID "a"),TIMES (ID "b",NUM 9)) : expression
+val compute8 = PLUS (PLUS (TIMES (NUM 9,ID "a"),TIMES (ID "b",NUM 9)),NUM 4)
+  : expression
+val compute9 =
+  TIMES (TIMES (PLUS (TIMES (NUM 9,ID "a"),TIMES (ID "b",NUM 9)),NUM 4),NUM 3)
+  : expression
+val compute10 =
+  PLUS (PLUS (TIMES (NUM 9,ID "a"),TIMES (ID "b",NUM 9)),TIMES (NUM 9,NUM 2))
+  : expression
+ **** compute compute0;
+val it = 9 : int
+ **** compute compute1;
+val it = 7 : int
+ **** compute compute2;
+val it = 25 : int
+ **** compute compute3;
+val it = 20 : int
+ **** compute compute4;
+val it = 72 : int
+ **** compute compute5;
+val it = 168 : int
+ **** compute compute6;
+val it = 984 : int
+ **** compute compute7;
+val it = 36 : int
+ **** compute compute8;
+val it = 40 : int
+ **** compute compute9;
+val it = 432 : int
+ **** compute compute10;
+val it = 54 : int
+
+--------- Part7 ---------
+ **** simplifyIdentities exp1;
+val it = NUM 2 : expression
+ **** simplifyIdentities exp2;
+val it = ID "a" : expression
+ **** simplifyIdentities exp3;
+val it = PLUS (NUM 2,ID "a") : expression
+ **** simplifyIdentities exp4;
+val it = TIMES (NUM 2,ID "a") : expression
+ **** simplifyIdentities exp5;
+val it = PLUS (TIMES (NUM 2,ID "a"),PLUS (ID "b",ID "x")) : expression
+ **** simplifyIdentities exp6;
+val it =
+  PLUS
+    (PLUS
+       (PLUS
+          (PLUS
+             (PLUS (PLUS (NUM 1,TIMES (NUM 2,NUM 3)),TIMES (ID "a",NUM 4)),
+              NUM 3),NUM 2),TIMES (NUM 7,NUM 2)),
+     PLUS (PLUS (NUM 9,NUM 4),ID "b")) : expression
+ **** simplifyIdentities exp7;
+val it =
+  PLUS
+    (PLUS
+       (PLUS
+          (PLUS
+             (PLUS (PLUS (NUM 1,TIMES (NUM 2,NUM 3)),TIMES (NUM 2,NUM 4)),
+              NUM 3),NUM 2),TIMES (NUM 7,NUM 2)),
+     PLUS (PLUS (NUM 9,NUM 4),ID "b")) : expression
+ **** simplifyIdentities exp8;
+val it = ID "a" : expression
+ **** simplifyIdentities exp9;
+val it =
+  PLUS
+    (PLUS
+       (PLUS
+          (PLUS (PLUS (TIMES (NUM 2,NUM 3),TIMES (NUM 2,NUM 4)),NUM 3),NUM 2),
+        NUM 7),PLUS (PLUS (NUM 9,NUM 4),ID "b")) : expression
+
+--------- Part8 ---------
+ **** foldConstants exp1;
+val it = NUM 2 : expression
+ **** foldConstants exp2;
+val it = ID "a" : expression
+ **** foldConstants exp3;
+val it = PLUS (NUM 2,ID "a") : expression
+ **** foldConstants exp4;
+val it = TIMES (NUM 2,ID "a") : expression
+ **** foldConstants exp5;
+val it = PLUS (TIMES (NUM 2,ID "a"),PLUS (ID "b",ID "x")) : expression
+ **** foldConstants exp6;
+val it =
+  PLUS
+    (PLUS (PLUS (PLUS (PLUS (NUM 7,TIMES (ID "a",NUM 4)),NUM 3),NUM 2),NUM 14),
+     PLUS (NUM 13,ID "b")) : expression
+ **** foldConstants exp7;
+val it = PLUS (NUM 34,PLUS (NUM 13,ID "b")) : expression
+ **** foldConstants exp8;
+val it = PLUS (TIMES (NUM 1,ID "a"),NUM 0) : expression
+ **** foldConstants exp9;
+val it = PLUS (NUM 26,PLUS (NUM 13,ID "b")) : expression
+
+--------- Part9 ---------
+mixed_compute (INT 1);
+val it = INT_VAL 1 : value
+mixed_compute (ADD (INT 1, INT 2));
+val it = INT_VAL 3 : value
+mixed_compute (ADD (MULT (INT 4, INT 2), INT 2));
+val it = INT_VAL 10 : value
+mixed_compute (LESSTHAN (ADD (INT 4, INT 9),ADD (MULT (INT 4, INT 3), INT 2)));
+val it = BOOL_VAL true : value
+mixed_compute (LESSTHAN (LESSTHAN (INT 4, INT 9),ADD (MULT (INT 4, INT 2), INT 2)));
+val it = ERROR_VAL : value
+mixed_compute (ADD (LESSTHAN (INT 4, INT 1), INT 2));
+val it = ERROR_VAL : value
+
+--------- Part10 ---------
+ **** wordsFromFile "wordsFromFile.input";
+val it =
+  ["Write","a","function","named","wordsFromFile","that","takes","a",
+   "filename","as","a","string","and","returns","a","list","containing","the",
+   "\"words\"","that","appear","in","the","file.","For","this","function,",
+   "a","\"word\"","is","any","sequence","of","non-whitespace","characters.",
+   "You","can","use","Char.isSpace","to","check","for","whitespace",
+   "characters."] : string list
+
+
+--------- Actual Part 3 ---------
+JUnit version 4.12
+.....
+
+OK (5 tests)
+
